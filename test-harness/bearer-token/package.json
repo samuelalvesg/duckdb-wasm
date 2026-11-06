@@ -1,0 +1,14 @@
+{
+  "name": "bearer-token-browser-harness",
+  "private": true,
+  "scripts": {
+    "build": "esbuild entry.js --bundle --format=esm --outfile=bundle.js --log-level=warning",
+    "serve": "node server.cjs",
+    "test": "node run.cjs"
+  },
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "1.33.1-dev114.0",
+    "esbuild": "^0.25.0",
+    "puppeteer-core": "^24.0.0"
+  }
+}
