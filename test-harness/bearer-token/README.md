@@ -27,13 +27,14 @@ Pipeline run of a duckdb-httpfs build (download it with `gh run download <run> -
 
 ## Result (2026-11-06)
 
-`@duckdb/duckdb-wasm@1.33.1-dev114.0` (DuckDB v2.0.0), Chrome 157, bundle `base`. Extensions built by the CI of
-a fork of duckdb-httpfs.
+`@duckdb/duckdb-wasm@1.33.1-dev114.0` (DuckDB v2.0.0), Chrome 157, bundle `base`, secret `TYPE http`.
 
 | httpfs build | `Authorization` seen by the server | control `X-Test` |
 |---|---|---|
-| `main` of duckdb/duckdb-httpfs (`3b48554`) | `null` | `control` |
-| `main` + `bearer_token` sent from `HTTPRequestSnapshot::CreateRequest` | `Bearer tok123` (HEAD and GET) | `control` |
+| official extension (`INSTALL httpfs` from the default repository) | `null` (HEAD and GET) | `control` |
+| `main` of duckdb/duckdb-httpfs (`3b48554`), built by the CI of a fork | `null` | `control` |
+| `main` + `bearer_token` sent from `HTTPRequestSnapshot::CreateRequest`, built by the CI of a fork | `Bearer tok123` (HEAD and GET) | `control` |
 
-The extension published in the official repository was older than this DuckDB-Wasm build and dropped even the
-`EXTRA_HTTP_HEADERS` control, so it cannot be used for this check.
+Only one secret of a type applies to a request when the scopes are the same, so the control is run after the
+bearer secret is dropped. The server is local; a real gated Hugging Face dataset and the `huggingface` secret type
+were not tested.
